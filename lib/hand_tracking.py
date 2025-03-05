@@ -1,6 +1,7 @@
 
 from lib.camera import Camera
 from datetime import datetime
+from collections import deque
 import mediapipe as mp
 import numpy as np
 import pandas as pd
@@ -18,9 +19,10 @@ class HandTracking():
         self.frame = None
         
         # save data landmark
+        self.row = deque(maxlen=100)
+
+    def reset_row (self):
         self.row = []
-
-
 
     def calculate_angle(self,a, b, c):
         a = np.array(a)

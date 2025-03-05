@@ -100,6 +100,14 @@
        <height>31</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(38, 162, 105);</string>
      </property>
@@ -133,6 +141,14 @@
         <height>31</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(92, 53, 102);
 color : white;</string>
@@ -140,6 +156,14 @@ color : white;</string>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QLabel" name="label_18">
+         <property name="font">
+          <font>
+           <family>Poppins</family>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="styleSheet">
           <string notr="true"/>
          </property>
@@ -162,6 +186,14 @@ color : white;</string>
         <height>41</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>-1</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton:enabled {
     background-color: blue;
@@ -180,7 +212,7 @@ QPushButton:disabled {
 }</string>
       </property>
       <property name="text">
-       <string>START</string>
+       <string>Start</string>
       </property>
      </widget>
      <widget class="QPushButton" name="pb_stop_mode">
@@ -191,6 +223,14 @@ QPushButton:disabled {
         <width>101</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>-1</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton:enabled {
@@ -210,7 +250,7 @@ QPushButton:disabled {
 }</string>
       </property>
       <property name="text">
-       <string>STOP</string>
+       <string>Stop</string>
       </property>
      </widget>
      <widget class="QRadioButton" name="radioButton_active">
@@ -273,6 +313,14 @@ QRadioButton:checked {
         <height>41</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(143, 89, 2);</string>
       </property>
@@ -302,6 +350,14 @@ QRadioButton:checked {
         <height>41</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(138, 226, 52);</string>
       </property>
@@ -330,6 +386,14 @@ QRadioButton:checked {
         <height>41</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(138, 226, 52);</string>
       </property>
@@ -355,6 +419,14 @@ color : white;</string>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QLabel" name="label_19">
+         <property name="font">
+          <font>
+           <family>Poppins</family>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="styleSheet">
           <string notr="true"/>
          </property>
@@ -377,6 +449,14 @@ color : white;</string>
        <width>221</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(229, 165, 10);</string>
@@ -415,10 +495,10 @@ color : white;</string>
      </property>
      <property name="font">
       <font>
-       <family>Ubuntu</family>
-       <pointsize>12</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
+       <family>Poppins</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -442,7 +522,8 @@ color : white;</string>
       </property>
       <property name="font">
        <font>
-        <family>Ubuntu Condensed</family>
+        <family>Poppins</family>
+        <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -465,7 +546,8 @@ color : white;</string>
       </property>
       <property name="font">
        <font>
-        <family>Ubuntu Condensed</family>
+        <family>Poppins</family>
+        <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -514,13 +596,14 @@ color : white;</string>
        <rect>
         <x>670</x>
         <y>80</y>
-        <width>71</width>
+        <width>91</width>
         <height>17</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Ubuntu Condensed</family>
+        <family>Poppins</family>
+        <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -576,6 +659,15 @@ color : white;</string>
         <width>91</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: transparent;
@@ -637,14 +729,17 @@ color:blackl;</string>
       <rect>
        <x>40</x>
        <y>30</y>
-       <width>141</width>
+       <width>161</width>
        <height>17</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>13</pointsize>
-       <underline>true</underline>
+       <family>Poppins</family>
+       <pointsize>11</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
       </font>
      </property>
      <property name="styleSheet">
@@ -659,13 +754,16 @@ color:blackl;</string>
       <rect>
        <x>40</x>
        <y>60</y>
-       <width>181</width>
+       <width>211</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>13</pointsize>
+       <family>Poppins</family>
+       <pointsize>11</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">

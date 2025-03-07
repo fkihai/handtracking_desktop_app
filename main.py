@@ -15,6 +15,9 @@ from lib.plot_canvas import MatplotlibCanvas
 from datetime import datetime as dt
 
 
+# TODO:
+# Membuat download semuad data record
+
 class MainApp(QMainWindow, Ui_MainWindow):
     
     def __init__(self):

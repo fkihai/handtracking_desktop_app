@@ -66,7 +66,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../../Downloads/LOGO BLU_CIRCLE.png</pixmap>
+      <pixmap>logo/logo_blu.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -85,7 +85,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../../Downloads/Logo_unej-removebg-preview.png</pixmap>
+      <pixmap>logo/logo_unej.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>

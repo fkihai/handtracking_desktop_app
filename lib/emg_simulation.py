@@ -1,13 +1,11 @@
-import myo
 import numpy as np
 from threading import Lock
 from PyQt5.QtCore import QThread, pyqtSignal
 from collections import deque
 
 # Dummy 
-class EmgCollector(myo.DeviceListener):
+class EmgCollector:
     def __init__(self, n):
-        super().__init__()
         self.n = n
         self.lock = Lock()
         self.record = False
@@ -27,15 +25,13 @@ class EmgCollector(myo.DeviceListener):
     
     def get_emg_full_data(self):
         return list(self.emg_full_data)
-    
-    def on_connected(self, event):
-        event.device.stream_emg(True)
 
-    def on_emg(self, event):
+    def generate_dummy_emg(self):
+        dummy_emg = np.random.randint(-100, 100, size=8)
         with self.lock:
-            self.emg_data_queue.append((event.timestamp, event.emg))
+            self.emg_data_queue.append((0, dummy_emg))
             if self.record :
-                self.emg_full_data.append((event.timestamp,event.emg))
+                self.emg_full_data.append((0,dummy_emg))
                           
 class EmgThread(QThread):
     data_updated = pyqtSignal(list)
@@ -46,18 +42,14 @@ class EmgThread(QThread):
         self.running = True
         
     def run(self):
-        myo.init()
-        hub = myo.Hub()
-        with hub.run_in_background(self.listener):
-            while self.running:
-                emg_data = self.listener.get_emg_data()
-                if  emg_data:
-                    emg_data = np.array([x[1] for x in emg_data]).T
-                    self.data_updated.emit(emg_data.tolist())
-                self.msleep(100)
+        while self.running:
+            self.listener.generate_dummy_emg()
+            emg_data = self.listener.get_emg_data()
+            emg_data = np.array([x[1] for x in emg_data]).T 
+            self.data_updated.emit(emg_data.tolist())
+            self.msleep(100)
     
     def stop(self):
         self.running = False
         self.quit()
         self.wait()
-

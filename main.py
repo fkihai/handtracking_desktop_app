@@ -3,17 +3,15 @@ import sys
 import time
 import numpy as np
 import pandas as pd
-from PyQt5.QtWidgets import QApplication, QMainWindow, QBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QBoxLayout, QDockWidget
 from PyQt5.QtCore import QTimer,Qt
-
 from gui import Ui_MainWindow
-from lib.camera import Camera
-from lib.hand_tracking import HandTracking
-from lib.camera_thread import CameraThread
-from lib.emg import EmgCollector, EmgThread
-from lib.plot_canvas import MatplotlibCanvas
 from datetime import datetime as dt
 
+from lib.emg_simulation import EmgCollector, EmgThread
+from lib.camera import Camera, CameraThread
+from lib.hand_tracking import HandTracking
+from lib.plot_canvas import MatplotlibCanvas
 
 # TODO:
 # Membuat download semuad data record
@@ -21,9 +19,10 @@ from datetime import datetime as dt
 class MainApp(QMainWindow, Ui_MainWindow):
     
     def __init__(self):
-        super().__init__()
+        super().__init__()        
         self.setupUi(self)
-        self.camera = Camera(2)
+        self.statusBar().hide()         
+        self.camera = Camera(1)
         self.hand_tracking = HandTracking()
         self.canvas = MatplotlibCanvas()
         self.emg_listener = EmgCollector(n=500)
@@ -166,6 +165,7 @@ class MainApp(QMainWindow, Ui_MainWindow):
         
     def closeEvent(self, event):
         self.camera_thread.stop()
+        self.emg_thread.stop()
         if self.camera:
             self.camera.release()
             print('Tutup')
@@ -174,6 +174,7 @@ class MainApp(QMainWindow, Ui_MainWindow):
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
     window = MainApp()
     window.show()
     sys.exit(app.exec_())

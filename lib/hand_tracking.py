@@ -24,17 +24,25 @@ class HandTracking():
     def reset_row (self):
         self.row = []
 
-    def calculate_angle(self,a, b, c):
-        a = np.array(a)
-        b = np.array(b)
-        c = np.array(c)
+    def calculate_angle(self, a, b, c):
+        a = np.array(a, dtype=np.float64)
+        b = np.array(b, dtype=np.float64)
+        c = np.array(c, dtype=np.float64)
+
         ba = a - b
         bc = c - b
-        cosine_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
+
+        norm_ba = np.linalg.norm(ba)
+        norm_bc = np.linalg.norm(bc)
+        
+        if norm_ba == 0 or norm_bc == 0:
+            return 0.0  
+
+        cosine_angle = np.dot(ba, bc) / (norm_ba * norm_bc)
         cosine_angle = np.clip(cosine_angle, -1.0, 1.0)
         angle = np.degrees(np.arccos(cosine_angle))
+
         return angle
-    
     
     def tracking(self, frame):             
         self.frame = cv2.flip(frame, 1)

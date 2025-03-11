@@ -40,7 +40,7 @@ class Ui_MainWindow(object):
         self.label_2.setScaledContents(True)
         self.label_2.setObjectName("label_2")
         self.pb_input_model = QtWidgets.QPushButton(self.frame)
-        self.pb_input_model.setGeometry(QtCore.QRect(50, 620, 221, 31))
+        self.pb_input_model.setGeometry(QtCore.QRect(50, 580, 221, 41))
         font = QtGui.QFont()
         font.setFamily("Poppins")
         font.setPointSize(10)
@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         self.pb_input_model.setStyleSheet("background-color: rgb(38, 162, 105);")
         self.pb_input_model.setObjectName("pb_input_model")
         self.groupBox = QtWidgets.QGroupBox(self.frame)
-        self.groupBox.setGeometry(QtCore.QRect(10, 140, 301, 321))
+        self.groupBox.setGeometry(QtCore.QRect(10, 140, 301, 261))
         font = QtGui.QFont()
         font.setKerning(False)
         self.groupBox.setFont(font)
@@ -84,10 +84,7 @@ class Ui_MainWindow(object):
         self.pb_start_mode = QtWidgets.QPushButton(self.groupBox)
         self.pb_start_mode.setGeometry(QtCore.QRect(30, 190, 101, 41))
         font = QtGui.QFont()
-        font.setFamily("Poppins")
         font.setPointSize(-1)
-        font.setBold(True)
-        font.setWeight(75)
         self.pb_start_mode.setFont(font)
         self.pb_start_mode.setStyleSheet("QPushButton:enabled {\n"
 "    background-color: blue;\n"
@@ -108,10 +105,7 @@ class Ui_MainWindow(object):
         self.pb_stop_mode = QtWidgets.QPushButton(self.groupBox)
         self.pb_stop_mode.setGeometry(QtCore.QRect(170, 190, 101, 41))
         font = QtGui.QFont()
-        font.setFamily("Poppins")
         font.setPointSize(-1)
-        font.setBold(True)
-        font.setWeight(75)
         self.pb_stop_mode.setFont(font)
         self.pb_stop_mode.setStyleSheet("QPushButton:enabled {\n"
 "    background-color: red;\n"
@@ -151,20 +145,22 @@ class Ui_MainWindow(object):
         self.radioButton_active.setObjectName("radioButton_active")
         self.choose_mode = QtWidgets.QComboBox(self.groupBox)
         self.choose_mode.setGeometry(QtCore.QRect(30, 110, 241, 41))
-        self.choose_mode.setStyleSheet("background-color: rgb(138, 226, 52);")
-        self.choose_mode.setObjectName("choose_mode")
-        self.pb_input_model_2 = QtWidgets.QPushButton(self.groupBox)
-        self.pb_input_model_2.setGeometry(QtCore.QRect(40, 260, 221, 41))
         font = QtGui.QFont()
         font.setFamily("Poppins")
-        font.setPointSize(10)
+        font.setPointSize(9)
         font.setBold(True)
         font.setWeight(75)
-        self.pb_input_model_2.setFont(font)
-        self.pb_input_model_2.setStyleSheet("background-color: rgb(143, 89, 2);")
-        self.pb_input_model_2.setObjectName("pb_input_model_2")
+        self.choose_mode.setFont(font)
+        self.choose_mode.setStyleSheet("background-color: rgb(138, 226, 52);\n"
+"\n"
+"QComboBox{\n"
+"        font-family: \"Poppins\";\n"
+"        font-size: 10pt;\n"
+"        font-weight: bold;\n"
+"}")
+        self.choose_mode.setObjectName("choose_mode")
         self.groupBox_4 = QtWidgets.QGroupBox(self.frame)
-        self.groupBox_4.setGeometry(QtCore.QRect(10, 470, 301, 131))
+        self.groupBox_4.setGeometry(QtCore.QRect(10, 430, 301, 131))
         self.groupBox_4.setTitle("")
         self.groupBox_4.setObjectName("groupBox_4")
         self.choose_baudrate = QtWidgets.QComboBox(self.groupBox_4)
@@ -211,7 +207,7 @@ class Ui_MainWindow(object):
         self.label_19.setObjectName("label_19")
         self.horizontalLayout_4.addWidget(self.label_19)
         self.pb_input_model_3 = QtWidgets.QPushButton(self.frame)
-        self.pb_input_model_3.setGeometry(QtCore.QRect(50, 660, 221, 31))
+        self.pb_input_model_3.setGeometry(QtCore.QRect(50, 640, 221, 41))
         font = QtGui.QFont()
         font.setFamily("Poppins")
         font.setPointSize(10)
@@ -355,7 +351,6 @@ class Ui_MainWindow(object):
         self.pb_start_mode.setText(_translate("MainWindow", "Start"))
         self.pb_stop_mode.setText(_translate("MainWindow", "Stop"))
         self.radioButton_active.setText(_translate("MainWindow", "Active"))
-        self.pb_input_model_2.setText(_translate("MainWindow", "Download Data"))
         self.choose_baudrate.setItemText(0, _translate("MainWindow", "Baudrate"))
         self.choose_baudrate.setItemText(1, _translate("MainWindow", "9600"))
         self.choose_baudrate.setItemText(2, _translate("MainWindow", "115200"))

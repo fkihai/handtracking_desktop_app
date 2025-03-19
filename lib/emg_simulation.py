@@ -1,4 +1,5 @@
 import numpy as np
+import time
 from threading import Lock
 from PyQt5.QtCore import QThread, pyqtSignal
 from collections import deque
@@ -18,12 +19,18 @@ class EmgCollector:
     
     def stop_recording(self):
         self.record = False
+    
+    def get_emg(self):
+        with self.lock:
+            if self.emg_data_queue:
+                return self.emg_data_queue[-1][1]
+            return None
 
-    def get_emg_data(self):
+    def get_list_emg_data(self):
         with self.lock:
             return list(self.emg_data_queue)
     
-    def get_emg_full_data(self):
+    def get_list_emg_full_data(self):
         return list(self.emg_full_data)
 
     def generate_dummy_emg(self):
@@ -44,7 +51,7 @@ class EmgThread(QThread):
     def run(self):
         while self.running:
             self.listener.generate_dummy_emg()
-            emg_data = self.listener.get_emg_data()
+            emg_data = self.listener.get_list_emg_data()
             emg_data = np.array([x[1] for x in emg_data]).T 
             self.data_updated.emit(emg_data.tolist())
             self.msleep(100)

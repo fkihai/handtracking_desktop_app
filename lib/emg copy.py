@@ -24,7 +24,7 @@ class EmgCollector(myo.DeviceListener):
     def get_emg(self):
         with self.lock:
             if self.emg_data_queue:
-                return self.emg_data_queue[-1][1]
+                return self.emg_data_queue[-1]
             return None
 
     def get_list_emg_data(self):

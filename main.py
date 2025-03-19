@@ -3,6 +3,8 @@ import sys
 import time
 import numpy as np
 import pandas as pd
+from datetime import datetime
+
 from PyQt5.QtWidgets import QApplication, QMainWindow, QBoxLayout, QDockWidget
 from PyQt5.QtCore import QTimer,Qt
 from gui import Ui_MainWindow
@@ -22,7 +24,7 @@ class MainApp(QMainWindow, Ui_MainWindow):
         super().__init__()        
         self.setupUi(self)
         self.statusBar().hide()         
-        self.camera = Camera(1)
+        self.camera = Camera(2)
         self.hand_tracking = HandTracking()
         self.canvas = MatplotlibCanvas()
         self.emg_listener = EmgCollector(n=500)
@@ -43,7 +45,7 @@ class MainApp(QMainWindow, Ui_MainWindow):
 
         # camera thread
         self.camera_thread = CameraThread(self.camera,self.hand_tracking)
-        self.camera_thread.frame_updated.connect(self.update_frame_camera,Qt.QueuedConnection)
+        self.camera_thread.frame_updated.connect(self.update_frame_camera)
         self.camera_thread.start()
 
         # Emg thread
@@ -67,24 +69,23 @@ class MainApp(QMainWindow, Ui_MainWindow):
         self.plot_view.setLayout(layout)
     
     
-    def store_emg(self, emg_data):
-        self.emg_buffer = emg_data
-        
-    def update_plot(self):
-        if self.emg_buffer:
-            self.canvas.update_plot(self.emg_buffer)
-
     def update_frame_camera(self,frame):
 
         pixmap = frame
         pixmap = pixmap.scaled(self.camera_view.width(),self.camera_view.height())
         self.camera_view.setPixmap(pixmap)
-    
+                
         data_row = self.hand_tracking.get_landmark_data()
         if self.collect :
             if not data_row:
                 return
+            
+            emg_data = self.emg_listener.get_emg().tolist()
+            emg_data.insert(0,datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H:%M:%S"))
+            
             self.landmark_buffer.append(data_row)
+            self.emg_buffer.append(emg_data)
+            
        
     def startMode(self):
         mode = self.choose_mode.currentText()
@@ -151,15 +152,18 @@ class MainApp(QMainWindow, Ui_MainWindow):
     
     def save_myo(self):
         
-        header_myo = ["EMG_1", "EMG_2", "EMG_3", "EMG_4", "EMG_5", "EMG_6", "EMG_7", "EMG_8"]
+        header_myo = ["TIME", "EMG_1", "EMG_2", "EMG_3", "EMG_4", "EMG_5", "EMG_6", "EMG_7", "EMG_8"]
                 
         os.makedirs(os.path.join('data','myo'), exist_ok=True)
         myo_file_path = os.path.join('data','myo',f'myo_{dt.now().strftime("%Y%m%d_%H%M%S")}.csv')
         
-        emg_data = self.emg_listener.get_emg_full_data()
-        emg_data = np.array([x[1] for x in emg_data]).T
+        if not self.emg_buffer:
+            print("Data EMG Empty")    
+            return
+        
+        emg_data = self.emg_buffer
                 
-        df_myo =  pd.DataFrame(emg_data.T,columns=header_myo)
+        df_myo =  pd.DataFrame(emg_data,columns=header_myo)
         df_myo.to_csv(myo_file_path, mode='a', index=False)
 
         

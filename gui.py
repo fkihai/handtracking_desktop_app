@@ -302,6 +302,12 @@ class Ui_MainWindow(object):
         self.lowSpeed.setObjectName("lowSpeed")
         self.cmd_view = QtWidgets.QLabel(self.groupBox_2)
         self.cmd_view.setGeometry(QtCore.QRect(110, 30, 131, 31))
+        font = QtGui.QFont()
+        font.setFamily("Poppins")
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.cmd_view.setFont(font)
         self.cmd_view.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "color:blackl;")
         self.cmd_view.setText("")

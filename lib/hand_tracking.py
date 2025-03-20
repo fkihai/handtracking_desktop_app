@@ -49,6 +49,7 @@ class HandTracking():
         rgb_frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
         results = self.hands.process(rgb_frame)
         
+        self.row = None
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
                 self.mp_drawing.draw_landmarks(self.frame, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)

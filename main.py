@@ -10,7 +10,7 @@ from PyQt5.QtCore import QTimer,Qt
 from gui import Ui_MainWindow
 from datetime import datetime as dt
 
-from lib.emg_simulation import EmgCollector, EmgThread
+from lib.emg import EmgCollector, EmgThread
 from lib.camera import Camera, CameraThread
 from lib.hand_tracking import HandTracking
 from lib.plot_canvas import MatplotlibCanvas
@@ -24,7 +24,7 @@ class MainApp(QMainWindow, Ui_MainWindow):
         super().__init__()        
         self.setupUi(self)
         self.statusBar().hide()         
-        self.camera = Camera(2)
+        self.camera = Camera(0)
         self.hand_tracking = HandTracking()
         self.canvas = MatplotlibCanvas()
         self.emg_listener = EmgCollector(n=500)
@@ -36,6 +36,7 @@ class MainApp(QMainWindow, Ui_MainWindow):
         
         # counter cmd 
         self.index_cmd = 0
+        self.count  = 0
         
         # state mode
         self.collect = False
@@ -56,6 +57,11 @@ class MainApp(QMainWindow, Ui_MainWindow):
         # Perintah
         self.cmd_timer = QTimer(self)
         self.cmd_timer.timeout.connect(self.update_perintah)
+        
+        self.timer_set.setValue(5)
+        self.count_set.setValue(6)
+        self.timer_set.setMinimum(1)
+        self.count_set.setMinimum(1)
 
         # widget state mmode
         self.choose_mode.addItems(self.list_mode)
@@ -77,9 +83,10 @@ class MainApp(QMainWindow, Ui_MainWindow):
                 
         data_row = self.hand_tracking.get_landmark_data()
         if self.collect :
-            if not data_row:
-                return
             
+            if data_row is None:
+                return
+                        
             emg_data = self.emg_listener.get_emg().tolist()
             emg_data.insert(0,datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H:%M:%S"))
             
@@ -93,6 +100,12 @@ class MainApp(QMainWindow, Ui_MainWindow):
         self.pb_stop_mode.setEnabled(True)
         self.pb_start_mode.setEnabled(False)
         
+        # reset
+        self.index_cmd = 0
+        self.count = 0
+        self.landmark_buffer = []
+        self.emg_buffer = []
+                
         if mode == self.list_mode[0]:
             self.collect, self.realtime, self.training = True, False, False
             if self.collect :
@@ -123,11 +136,19 @@ class MainApp(QMainWindow, Ui_MainWindow):
 
         
     def update_perintah(self):
-        list_cmd = ['Genggam','Lepaskan','Istirahat']
-        self.cmd_view.setText(list_cmd[self.index_cmd])
-        self.index_cmd = (self.index_cmd + 1) % len(list_cmd) 
-        self.cmd_timer.start(5000)
+        if self.count < self.count_set.value():
+            list_cmd = ['Genggam','Lepaskan','Istirahat']
+            self.cmd_view.setText(list_cmd[self.index_cmd])
+            self.index_cmd = (self.index_cmd + 1) % len(list_cmd)
+            
+            if self.index_cmd == 0:
+                self.count = self.count + 1
+                
+            
+            self.cmd_timer.start(self.timer_set.value() * 1000)
         
+        else:           
+            self.stopMode()
         
     def save_landmark(self):
         

@@ -1,22 +1,16 @@
 import os
 import sys
-import time
-import numpy as np
 import pandas as pd
-from datetime import datetime
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QBoxLayout, QDockWidget
-from PyQt5.QtCore import QTimer,Qt
+from PyQt5.QtWidgets import QApplication, QMainWindow, QBoxLayout
+from PyQt5.QtCore import QTimer
 from gui import Ui_MainWindow
 from datetime import datetime as dt
 
-from lib.emg import EmgCollector, EmgThread
+from lib.emg_simulation import EmgCollector, EmgThread
 from lib.camera import Camera, CameraThread
 from lib.hand_tracking import HandTracking
 from lib.plot_canvas import MatplotlibCanvas
-
-# TODO:
-# Membuat download semuad data record
 
 class MainApp(QMainWindow, Ui_MainWindow):
     
@@ -24,7 +18,7 @@ class MainApp(QMainWindow, Ui_MainWindow):
         super().__init__()        
         self.setupUi(self)
         self.statusBar().hide()         
-        self.camera = Camera(0)
+        self.camera = Camera(2)
         self.hand_tracking = HandTracking()
         self.canvas = MatplotlibCanvas()
         self.emg_listener = EmgCollector(n=500)
@@ -57,7 +51,6 @@ class MainApp(QMainWindow, Ui_MainWindow):
         # Perintah
         self.cmd_timer = QTimer(self)
         self.cmd_timer.timeout.connect(self.update_perintah)
-        
         self.timer_set.setValue(5)
         self.count_set.setValue(6)
         self.timer_set.setMinimum(1)
@@ -81,16 +74,14 @@ class MainApp(QMainWindow, Ui_MainWindow):
         pixmap = pixmap.scaled(self.camera_view.width(),self.camera_view.height())
         self.camera_view.setPixmap(pixmap)
                 
-        data_row = self.hand_tracking.get_landmark_data()
+        landmark_data = self.hand_tracking.get_landmark_data()
+        emg_data = self.emg_listener.get_emg()
+                
         if self.collect :
+            if landmark_data is None or emg_data is None :
+                return            
             
-            if data_row is None:
-                return
-                        
-            emg_data = self.emg_listener.get_emg().tolist()
-            emg_data.insert(0,datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H:%M:%S"))
-            
-            self.landmark_buffer.append(data_row)
+            self.landmark_buffer.append(landmark_data)
             self.emg_buffer.append(emg_data)
             
        
@@ -99,13 +90,13 @@ class MainApp(QMainWindow, Ui_MainWindow):
         self.radioButton_active.setChecked(True)
         self.pb_stop_mode.setEnabled(True)
         self.pb_start_mode.setEnabled(False)
-        
+
         # reset
         self.index_cmd = 0
         self.count = 0
         self.landmark_buffer = []
         self.emg_buffer = []
-                
+        
         if mode == self.list_mode[0]:
             self.collect, self.realtime, self.training = True, False, False
             if self.collect :
@@ -133,7 +124,6 @@ class MainApp(QMainWindow, Ui_MainWindow):
         self.cmd_timer.stop()
         self.cmd_view.setText("")
         self.radioButton_active.setChecked(False)
-
         
     def update_perintah(self):
         if self.count < self.count_set.value():
@@ -143,12 +133,11 @@ class MainApp(QMainWindow, Ui_MainWindow):
             
             if self.index_cmd == 0:
                 self.count = self.count + 1
-                
-            
             self.cmd_timer.start(self.timer_set.value() * 1000)
         
         else:           
             self.stopMode()
+        
         
     def save_landmark(self):
         
@@ -182,9 +171,7 @@ class MainApp(QMainWindow, Ui_MainWindow):
             print("Data EMG Empty")    
             return
         
-        emg_data = self.emg_buffer
-                
-        df_myo =  pd.DataFrame(emg_data,columns=header_myo)
+        df_myo =  pd.DataFrame(self.emg_buffer,columns=header_myo)
         df_myo.to_csv(myo_file_path, mode='a', index=False)
 
         
@@ -203,6 +190,3 @@ if __name__ == "__main__":
     window = MainApp()
     window.show()
     sys.exit(app.exec_())
-    
-    
-    

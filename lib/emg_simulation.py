@@ -1,5 +1,6 @@
 import numpy as np
 import time
+from datetime import datetime
 from threading import Lock
 from PyQt5.QtCore import QThread, pyqtSignal
 from collections import deque
@@ -19,11 +20,14 @@ class EmgCollector:
     
     def stop_recording(self):
         self.record = False
-    
+        
     def get_emg(self):
         with self.lock:
             if self.emg_data_queue:
-                return self.emg_data_queue[-1][1]
+                data = self.emg_data_queue[-1]
+                if isinstance(data[0], str) and isinstance(data[1].tolist(), list):
+                    return [data[0]] + data[1].tolist() 
+                return data[1]  
             return None
 
     def get_list_emg_data(self):
@@ -34,11 +38,12 @@ class EmgCollector:
         return list(self.emg_full_data)
 
     def generate_dummy_emg(self):
+        timestamp = datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H:%M:%S") 
         dummy_emg = np.random.randint(-100, 100, size=8)
         with self.lock:
-            self.emg_data_queue.append((0, dummy_emg))
+            self.emg_data_queue.append((timestamp, dummy_emg))
             if self.record :
-                self.emg_full_data.append((0,dummy_emg))
+                self.emg_full_data.append((timestamp,dummy_emg))
                           
 class EmgThread(QThread):
     data_updated = pyqtSignal(list)

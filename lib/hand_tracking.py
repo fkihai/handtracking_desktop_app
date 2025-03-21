@@ -1,13 +1,9 @@
-
-from lib.camera import Camera
 from datetime import datetime
 from collections import deque
 import mediapipe as mp
 import numpy as np
-import pandas as pd
 import time
 import cv2
-import os
 
 class HandTracking():
     
@@ -135,7 +131,7 @@ class HandTracking():
                                                 
                         # save angle
                         self.row.append(mcp_angle)
-                        self.row.append(pip)
+                        self.row.append(pip_angle)
                         self.row.append(dip_angle)     
                                               
         return self.frame

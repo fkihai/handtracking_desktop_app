@@ -3,6 +3,8 @@ import numpy as np
 from threading import Lock
 from PyQt5.QtCore import QThread, pyqtSignal
 from collections import deque
+from datetime import datetime
+import time
 
 # Dummy 
 class EmgCollector(myo.DeviceListener):
@@ -24,8 +26,12 @@ class EmgCollector(myo.DeviceListener):
     def get_emg(self):
         with self.lock:
             if self.emg_data_queue:
-                return self.emg_data_queue[-1][1]
+                data = self.emg_data_queue[-1]
+                if isinstance(data[0], str) and isinstance(data[1], list):
+                    return [data[0]] + data[1] 
+                return data[1]  
             return None
+
 
     def get_list_emg_data(self):
         with self.lock:
@@ -38,7 +44,7 @@ class EmgCollector(myo.DeviceListener):
         event.device.stream_emg(True)
 
     def on_emg(self, event):
-        timestamp = event.timestamp 
+        timestamp = datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H:%M:%S") 
         emg_data = list(event.emg)  
 
         with self.lock:
@@ -70,4 +76,3 @@ class EmgThread(QThread):
         self.running = False
         self.quit()
         self.wait()
-
